@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Конкурс Автопортретов, декабрь 2023</title>
+  <style>
+    body {
+      color: #333;
+      font-family: Arial,sans;
+      max-width: 960px;
+      margin: 0px auto;
+      text-align: center;
+    }
+    img {
+      width: 95%;
+    }
+    hr {
+      width: 75%;
+      color: #999;
+    }
+  </style>
+  <script src="./jq.js"></script>
+</head>
+<body>
+  <h1>Конкурс автопортретов, декабрь 2023</h1>
+  <p>Голосуют сами участники, присылавшие работы на конкурс. Листайте
+    фотографии коллег, проставляйте оценки от 1 до 5. В самом конце
+    введите секретный ключ полученный Вами от организатора и нажмите
+    кнопку. Убедитесь что сервер ответил что-то в духе "Ok: 30"
+    (количество поставленных вами оценок) - иначе
+    сразу жалуйтесь <a href="https://vk.com/rodion_gork">организатору</a>, пожалуйста.</p>
+
+    <form>
+    <p><img src="./010.jpg"/></p>
+    <p><img src="./020.jpg"/></p>
+    <p><img src="./030.jpg"/></p>
+    <p><img src="./040.jpg"/></p>
+    <p><img src="./050.jpg"/></p>
+    <p><img src="./060.jpg"/></p>
+    <p><img src="./070.jpg"/></p>
+    <p><img src="./080.jpg"/></p>
+    <p><img src="./090.jpg"/></p>
+    <p><img src="./100.jpg"/></p>
+    <p><img src="./110.jpg"/></p>
+    <p><img src="./120.jpg"/></p>
+    <p><img src="./130.jpg"/></p>
+    <p><img src="./140.jpg"/></p>
+    <p><img src="./150.jpg"/></p>
+    <p><img src="./160.jpg"/></p>
+    <p><img src="./170.jpg"/></p>
+    <p><img src="./180.jpg"/></p>
+    <p><img src="./190.jpg"/></p>
+    <p><img src="./200.jpg"/></p>
+    <p><img src="./210.jpg"/></p>
+    <p><img src="./220.jpg"/></p>
+    <p><img src="./230.jpg"/></p>
+    <p><img src="./240.jpg"/></p>
+    <p><img src="./250.jpg"/></p>
+    <p><img src="./260.jpg"/></p>
+    <p><img src="./270.jpg"/></p>
+    <p><img src="./280.jpg"/></p>
+    <p><img src="./290.jpg"/></p>
+    <p><img src="./300.jpg"/></p>
+    </form>
+    <input type="text" placeholder="Ваш секретный ключик" id="key"/><br/>
+    <button onclick="submitData()">Готово!</button>
+<script>
+
+$(function() {
+  $('img').each((i, el) => {
+    var elem = $(el);
+    var id = elem.attr('src').replace(/[^\d]/g, '');
+    var p = elem.parent();
+    $('<br/>').appendTo(p);
+    for (var i = 1; i != 6; i++) {
+      $(`<input type="radio" name="r${id}" value="${i}">${i} </input>`).appendTo(p);
+    }
+    $('<hr/>').insertAfter(p);
+  });
+});
+
+function submitData() {
+  var data = $('form').serializeArray();
+  var needed = $('img').length;
+  if (data.length != needed) {
+    alert('Кажется, забыли оценить еще: ' + (needed - data.length));
+    return;
+  }
+  data = JSON.stringify({key: $('#key').val(), marks: data});
+  $.post('https://skripofon.ru/photo-contest.php', data, onSuccess);
+}
+
+function onSuccess(data) {
+  alert(data);
+}
+
+</script>
+
+</body>
+</html>
