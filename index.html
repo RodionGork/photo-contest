@@ -32,7 +32,8 @@
     <button id="loginbtn" onclick="changeToLoginUrl()">Login</button>
     <a id="logoutref" href="./index.html" style="display:none">Logout</a>
     <div id="instruct">
-      <p>Это страница для оценки работ текущего фотоконкурса в группе "Фото. Плёнка. Конкурсы!"
+      <p>Это страница для оценки работ текущего фотоконкурса в группе
+        <a href="https://vk.com/film_photo_contest" target="_blank">Фото. Плёнка. Конкурсы!</a>
         Участвуют в оценке только те кто присылал работы - поэтому для начала нужно залогиниться,
         нажав кнопку выше. Логин работает через VK так что данная страница "поймёт" входит ли Ваш
         VK ID в список участников. Никаких персональных данных при этом не собираем, это для голосования не нужно :)</p>
@@ -61,6 +62,7 @@
 	<div id="endgame" style="display:none">
 	  <hr/>
 	  <h3>Спасибо</h3>
+	  Данные, кажется, сохранены успешно!<br/>
 	  Теперь эту страничку можно закрыть :)
 	</div>
 	
@@ -70,7 +72,7 @@
 	<b>Рекомендуется дождаться пока прогрузятся все фотографии!</b><br/>
 	<button id="startbtn" onclick="startvoting()" disabled="1">Начать Оценку</button>
 	</div>
-	<p>(c) 2024, Rodion Gorkovenko</p>
+	<p>(c) 2024, <a href="https://vk.com/rodion_gork" target="_blank">Rodion Gorkovenko</a></p>
     <script>
       var errors = [];
       errors['some_error'] = 'ВК не смог нас залогинить. Попробуйте повторить или пожалуйтесь администратору.';
