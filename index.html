@@ -2,18 +2,128 @@
 
 <html>
   <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Photo-contest v1.0 by RodionGork</title>
+    <style>
+    body {
+      color: #333;
+      font-family: Arial,sans;
+      max-width: 960px;
+      margin: 0px auto;
+      text-align: center;
+    }
+    img {
+      width: 95%;
+    }
+    hr {
+      width: 75%;
+      color: #999;
+    }
+    button {
+      font-size: 200%;
+    }
+    </style>
+    <script src="./jq.js"></script>
   </head>
   <body>
-    <button onclick="changeToLoginUrl()">Login</button>
-
+    <h1>Фото-Конкурс</h1>
+    <button id="loginbtn" onclick="changeToLoginUrl()">Login</button>
+    <a id="logoutref" href="./index.html" style="display:none">Logout</a>
+    <div id="instruct">
+      <p>Это страница для оценки работ текущего фотоконкурса в группе "Фото. Плёнка. Конкурсы!"
+        Участвуют в оценке только те кто присылал работы - поэтому для начала нужно залогиниться,
+        нажав кнопку выше. Логин работает через VK так что данная страница "поймёт" входит ли Ваш
+        VK ID в список участников. Никаких персональных данных при этом не собираем, это для голосования не нужно :)</p>
+      <p>После того как Вам удастся залогиниться, пролистайте эту страницу вниз - попутно пробежав взглядом
+        присланные работы - убедитесь что всё загрузилось (и что Вы видите свою работу в частности) - после
+        чего в самом низу нажмите кнопку <b>Начать Оценку</b>. По ходу оценивания Вы будете видеть по
+        две фотографии за раз и нужно будет выбрать какая лучше. И так пока пары не закончатся :) Результаты
+        сохраняются по окончании. Если Вы придёте голосовать ещё раз, Ваши новые оценки просто заменят старые.</p>
+    </div>
+    
+	<div id="images">
+	  <i>Здесь отобразятся все присланные работы чтобы убедиться что ничего не потеряно...</i>
+	</div>
+	
+	<div id="pair" style="display:none">
+	  <hr/>
+	  <h3>Осталось <span id="paircnt">#</span></h3>
+	  Выберите фотографию, которая больше нравится:<br/><br/>
+	  <img id="pic1" src=""/><br/><br/>
+	  <img id="pic2" src=""/><br/><br/>
+	  <button onclick="vote(1)">Первая</button><br/><br/>
+	  <button onclick="vote(0)">Вторая</button><br/><br/>
+	  <button onclick="vote(.5)">Одинаково</button>
+	</div>
+	
+	<button id="startbtn" onclick="startvoting()" disabled="1">Начать Оценку</button>
+	<p>(c) 2024, Rodion Gorkovenko</p>
     <script>
       var rediruri = 'https://skripofon.ru/photo-contest/login-redirect.php';
+      
+      function shuffle() {
+        var newarr = [];
+        while (imgids.length > 0) {
+          var p = imgids.splice(Math.floor(Math.random() * imgids.length), 1);
+          newarr.push(p[0]);
+        }
+        imgids = newarr;
+      }
+      
+      var q = new URLSearchParams(location.search).get('q');
+      if (q !== null) {
+        $('#loginbtn').hide();
+        $('#logoutref').show();
+        q = q.split('_');
+        $.get('./' + q[1] + '/data.json', function(data) {
+          $('#images').empty();
+          window.imgids = data.ids;
+          shuffle();
+          if (typeof(data) == 'string') data = JSON.parse(data);
+          for (var i = 0; i < imgids.length; i++) {
+            var id = imgids[i];
+            $(`<img src="./${q[1]}/${id}.jpg"/>`).appendTo('#images');
+            $(`<br/><a href="https://vk.com/id${id}" target="_blank">автор</a><hr/><br/>`).appendTo('#images');
+          }
+          $('#startbtn').attr('disabled', null);
+        });
+      }
+      
       function changeToLoginUrl() {
         var req = new XMLHttpRequest();
         req.open("GET", rediruri, false); // false for synchronous request
         req.send(null);
         location.assign('https://id.vk.com/auth?' + req.responseText);
+      }
+      
+      function nextPair() {
+        $('#paircnt').text(imgids.length/2);
+        $('#pic1').attr('src', `./${q[1]}/${imgids[0]}.jpg`);
+        $('#pic2').attr('src', `./${q[1]}/${imgids[1]}.jpg`);
+        window.scrollTo({top: $('#pair').get(0).offsetTop, behavior: 'smooth'});
+      }
+      
+      function vote(score) {
+        var v = [];
+        v.push(imgids.shift());
+        v.push(imgids.shift());
+        v.push(score);
+        votes.push(v);
+        if (imgids.length < 2) {
+          dosave();
+          return;
+        }
+        nextPair();
+      }
+      
+      function startvoting() {
+        window.votes = [];
+        $('#images').hide();
+        $('#startbtn').hide();
+        shuffle();
+        $('#pair').show();
+        nextPair();
       }
     </script>
   </body>
