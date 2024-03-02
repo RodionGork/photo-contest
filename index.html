@@ -1,0 +1,20 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Photo-contest v1.0 by RodionGork</title>
+  </head>
+  <body>
+    <button onclick="changeToLoginUrl()">Login</button>
+
+    <script>
+      var rediruri = 'https://skripofon.ru/photo-contest/login-redirect.php';
+      function changeToLoginUrl() {
+        var req = new XMLHttpRequest();
+        req.open("GET", rediruri, false); // false for synchronous request
+        req.send(null);
+        location.assign('https://id.vk.com/auth?' + req.responseText);
+      }
+    </script>
+  </body>
+</html>
