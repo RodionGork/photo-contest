@@ -32,11 +32,13 @@
   </head>
   <body>
     <h1>Фото-Конкурс</h1>
-    <button id="loginbtn" onclick="changeToLoginUrl('ru')">Login (vk.ru)</button>
-    <button id="loginbtn" onclick="changeToLoginUrl('com')">Login (vk.com)</button>
-	<br/>
+	<p id="loginbtn">
+    <button onclick="changeToLoginUrl('ru')">Login (vk.ru)</button>
+    <button onclick="changeToLoginUrl('com')">Login (vk.com)</button>
+	<br/><br/>
 	<i>не пугайтесь двух кнопок - это связано с тем что у VK теперь два домена - удобнее выбрать тот которым Вы в основном пользуетесь</i>
-    <a id="logoutref" href="./index.html" style="display:none">Logout</a>
+	</p>
+	<a id="logoutref" href="./index.html" style="display:none">Logout</a>
     <div id="instruct">
       <p>Это страница для оценки работ текущего фотоконкурса в группе
         <a href="https://vk.com/film_photo_contest" target="_blank">Фото. Плёнка. Конкурсы!</a>
