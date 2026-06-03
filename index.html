@@ -131,7 +131,7 @@
       
       function changeToLoginUrl() {
         var req = new XMLHttpRequest();
-        req.open("GET", 'https://skripofon.ru/photo-contest/login-redirect.php', false); // false for synchronous request
+        req.open("GET", 'https://rodiongork.tw1.ru/photo-contest/login-redirect.php', false); // false for synchronous request
         req.send(null);
         location.assign('https://id.vk.com/auth?' + req.responseText);
       }
@@ -147,7 +147,7 @@
         $('#pair').hide();
         var data = JSON.stringify({user: q[0], folder: q[1], uuid: q[2], votes: votes});
         showerr('wait');
-        $.post('https://skripofon.ru/photo-contest/save-result.php', data, function(res) {
+        $.post('https://rodiongork.tw1.ru/photo-contest/save-result.php', data, function(res) {
           if (res.startsWith('err_')) {
             showerr(res.substr(4));
           } else {
